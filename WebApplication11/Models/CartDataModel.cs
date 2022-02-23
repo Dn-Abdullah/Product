@@ -2,7 +2,7 @@
 
 namespace WebApplication11.Models
 {
-    public class CartData
+    public class CartDataModel
     {
        
             [Key]

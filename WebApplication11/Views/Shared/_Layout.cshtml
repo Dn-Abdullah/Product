@@ -31,11 +31,17 @@
                     {
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="ProductModels" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="ProductAdmin" asp-action="Index">Dasboard</a>
+                        </li>
+                         <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="ProductUser" asp-action="Index">Preview</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
                         </li>
+                        <li class="nav-item">
+                                <a class="nav-link " asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                           </li>
                     </ul>
                     }
                     else
@@ -44,9 +50,9 @@
                             <li class="nav-item">
                                 <a class="nav-link " asp-area="" asp-controller="Account" asp-action="Login">Login</a>
                             </li>
-                            <li class="nav-item">
+                          @*  <li class="nav-item">
                                 <a class="nav-link " asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                            </li>
+                            </li>*@
                         </ul>
                     } 
       <form class="d-flex">

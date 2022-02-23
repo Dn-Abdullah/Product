@@ -3,17 +3,16 @@
     ViewData["Title"] = "Index";
 }
 
-<h1 class="text-light bg-dark text-center">Product Screen</h1>
 <div class="container">
-    <div class="row mt-10 justify-content-center">
+    <div class="row mt-5 text-center">
         @foreach (var item in Model)
         {
             <div class="col-sm-4">
-                <div class="row justify-content-center text-light fs-3 m-3 fw-bold badge bg-Dark">
+                <div class="row  fs-3 mt-4 me-5 fw-bold badge bg-Dark">
                     @Html.DisplayFor(modelItem => item.ProductName)
 
                 </div>
-                <div class="row justify-content-center pb-2">
+                <div class="row justify-content-center">
                     <img src="@Url.Content("~/Uploads/" +item.ProfilePicture)" alt="Error" class="img-fluid">
 
                 </div>
@@ -31,7 +30,7 @@
                 <div>
                     <div class="row justify-content-center">
                         <a class="col-sm-10 btn btn-primary"
-                       asp-controller="ProductModels"
+                       asp-controller="ProductUser"
                        asp-action="Details"
                        asp-route-id="@item.Id">Details</a>
                     </div>
