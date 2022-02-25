@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication11.Data;
 using WebApplication11.Repository;
 using WebApplication11.ViewModels;
+using Microsoft.AspNetCore.Server;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,8 +16,17 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkSto
 builder.Services.AddTransient<IProductUserRepository, ProductUserRepository>();
 builder.Services.AddTransient<IProductAdminRepository, ProductAdminRepository>();
 builder.Services.AddTransient<IAccountRepository, AccountRepository>();
-
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 //builder.Services.AddDefaultIdentity<appiUser>(
 //    options => options.SignIn.RequireConfirmedAccount = true
@@ -47,6 +57,8 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

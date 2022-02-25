@@ -2,19 +2,23 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication11.Data;
 using WebApplication11.Models;
+//using Microsoft.AspNetCore.Identity;
+//using System.Security.Claims;
 
 namespace WebApplication11.ViewModels
 {
     public class ProductAdminRepository : IProductAdminRepository
     {
+        //IHttpContextAccessor _httpContextAccessor;
+        //private readonly UserManager<IdentityUser> _userManager;
         private readonly DatabaseContaxt _contaxt;
         private readonly IWebHostEnvironment _webHostEnvironment;
         public ProductAdminRepository(DatabaseContaxt contaxt, IWebHostEnvironment hostEnvironment)
         {
             _contaxt = contaxt;
-
             _webHostEnvironment = hostEnvironment;
-
+            //_userManager = userManager;
+            //_httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ProductModel> ProCreatee(IFormFile files, ProductModel pm)
@@ -30,10 +34,10 @@ namespace WebApplication11.ViewModels
                     var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
                     string filePath = Path.Combine(uploadsFolder, newFileName);
 
-                    // ProductModel objm = new ProductModel();
-                    //  var objfilesa = new ProductModel()
 
-                    var obj = new ProductModel()
+            //var abc = _userManager.GetUserId(HttpContext.User);
+
+            var obj = new ProductModel()
 
                     {
                         //  Id = 0,

@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication11.Data;
 using WebApplication11.Models;
 using WebApplication11.Repository;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace WebApplication11.Controllers
 {
@@ -17,6 +19,7 @@ namespace WebApplication11.Controllers
     public class ProductUserController : Controller
 
     {
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly DatabaseContaxt _context;
         private readonly IWebHostEnvironment webHostEnvironment;
         public IProductUserRepository _ProductUserRepository;
@@ -26,12 +29,13 @@ namespace WebApplication11.Controllers
 
             webHostEnvironment = hostEnvironment;
             _ProductUserRepository = productUserRepository;
-
+            
         }
 
         // GET: ProductModels
         public async Task<IActionResult> Index()
         {
+            //var abc = _userManager.GetUserId(HttpContext.User);
             return View(await _context.ProductModels.ToListAsync());
         }
 

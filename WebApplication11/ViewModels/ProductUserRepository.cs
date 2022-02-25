@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication11.Data;
 using WebApplication11.Models;
@@ -7,14 +8,18 @@ namespace WebApplication11.Repository
 {
     public class ProductUserRepository : IProductUserRepository
     {
+        public const string SessionKeyName = "_Name";
+        IHttpContextAccessor _httpContextAccessor;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly DatabaseContaxt _context;
         private readonly IWebHostEnvironment webHostEnvironment;
-        public ProductUserRepository(DatabaseContaxt context, IWebHostEnvironment hostEnvironment)
+        public ProductUserRepository(DatabaseContaxt context, IWebHostEnvironment hostEnvironment, IHttpContextAccessor httpContextAccessor, UserManager<IdentityUser> userManager)
         {
             _context = context;
 
             webHostEnvironment = hostEnvironment;
-
+            _httpContextAccessor = httpContextAccessor;
+            _userManager = userManager;
         }
         public async Task<List<ProductModel>> getcartItems(int id)
         {
@@ -37,11 +42,16 @@ namespace WebApplication11.Repository
         [HttpPost]
         public async Task<CartDataModel> AddCart(int id)
         {
+            if (string.IsNullOrEmpty(_httpContextAccessor.HttpContext.Session.GetString(SessionKeyName)))
+            {
+                _httpContextAccessor.HttpContext.Session.SetString(SessionKeyName, _userManager.GetUserId(_httpContextAccessor.HttpContext.User));
+            }
+            var UserId = _httpContextAccessor.HttpContext.Session.GetString(SessionKeyName);
 
             var obj = new CartDataModel()
             {
                 ProductId = id,
-                UserId = "123"
+                UserId = UserId,
             };
             if (obj != null)
             {

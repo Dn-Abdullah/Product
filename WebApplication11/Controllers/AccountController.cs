@@ -57,6 +57,7 @@ namespace WebApplication11.Controllers
 
                 if (result == 1)
                 {
+
                     return RedirectToAction("Index", "ProductAdmin");
                 }
 

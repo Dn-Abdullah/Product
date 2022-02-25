@@ -10,29 +10,57 @@ using WebApplication11.Data;
 using WebApplication11.Models;
 using WebApplication11.Repository;
 using WebApplication11.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace WebApplication11.Controllers
 {
+  
     [Authorize]
 
     public class ProductAdminController : Controller
     {
-        private readonly DatabaseContaxt _contaxt;
+        public const string SessionKeyName = "_Id";
+       
+
+        private readonly ILogger<IdentityUser> _logger;
+        // IHttpContextAccessor _httpContextAccessor;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly DatabaseContaxt _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IProductAdminRepository _ProductAdminRepository;
-        //  public IProductUserRepository ProductRepository;
-
-        public ProductAdminController(IProductAdminRepository productAdminRepository, IWebHostEnvironment webHostEnvironment, DatabaseContaxt contaxt)
+       
+        public ProductAdminController(IProductAdminRepository productAdminRepository, IWebHostEnvironment webHostEnvironment, DatabaseContaxt context, UserManager<IdentityUser> userManager, ILogger<IdentityUser> logger)
         {
-           _contaxt = contaxt;
+           _context = context;
             _webHostEnvironment = webHostEnvironment;
             _ProductAdminRepository = productAdminRepository;
-
+            _userManager = userManager;
+            _logger = logger;
+           // _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IActionResult> Index()
         {
-            return View(await _contaxt.ProductModels.ToListAsync());
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(SessionKeyName)))
+            {
+                HttpContext.Session.SetString(SessionKeyName, _userManager.GetUserId(HttpContext.User));
+              
+            }
+            var id = HttpContext.Session.GetString(SessionKeyName);
+            
+
+            _logger.LogInformation("Session Name: {Id}", id);
+           
+            //CookieOptions option = new CookieOptions
+            //{
+            //    Expires = DateTime.Now.AddMilliseconds(60)
+            //};
+
+            //Response.Cookies.Append("User", _userManager.GetUserId(HttpContext.User), option);
+            // var abc = _userManager.GetUserId(HttpContext.User);
+            return View(await _context.ProductModels.ToListAsync());
+        
         }
 
         [HttpGet]
@@ -118,7 +146,7 @@ namespace WebApplication11.Controllers
 
         private bool ProductModelExists(int id)
         {
-            return _contaxt.ProductModels.Any(e => e.Id == id);
+            return _context.ProductModels.Any(e => e.Id == id);
         }
 
         public IActionResult Createe()
@@ -136,7 +164,7 @@ namespace WebApplication11.Controllers
             {   
                     return NotFound();
             }
-            return View();
+            return RedirectToAction("Index", "ProductAdmin");
             ModelState.Clear();
           
         }

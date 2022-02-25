@@ -4,6 +4,7 @@ namespace WebApplication11.Models
 {
     public class ProductModel
     {
+        
         [Key]
         public int Id { get; set; }
         public string ProductName { get; set; }
