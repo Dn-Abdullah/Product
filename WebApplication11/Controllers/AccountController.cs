@@ -9,9 +9,9 @@ namespace WebApplication11.Controllers
     public class AccountController : Controller
     {
   
-        private readonly IAccountRepository _AccountRepository;
+        private readonly IAccountViewModel _AccountRepository;
 
-        public AccountController( IAccountRepository AccountRepository)
+        public AccountController( IAccountViewModel AccountRepository)
         {
         _AccountRepository = AccountRepository;
         }
@@ -24,7 +24,7 @@ namespace WebApplication11.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterModel model)
         {
             if (ModelState.IsValid)
             {
@@ -49,7 +49,7 @@ namespace WebApplication11.Controllers
         }
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginViewModel user)
+        public async Task<IActionResult> Login(LoginModel user)
         {
             if (ModelState.IsValid)
             {

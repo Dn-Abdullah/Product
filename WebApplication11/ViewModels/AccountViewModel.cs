@@ -4,11 +4,11 @@ using WebApplication11.Models;
 
 namespace WebApplication11.ViewModels
 {
-    public class AccountRepository : IAccountRepository
+    public class AccountViewModel : IAccountViewModel
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        public AccountRepository(UserManager<IdentityUser> userManager,
+        public AccountViewModel(UserManager<IdentityUser> userManager,
                                       SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
@@ -16,7 +16,7 @@ namespace WebApplication11.ViewModels
         }
 
 
-        public async Task<int> AdminRegistrtion(RegisterViewModel model)
+        public async Task<int> AdminRegistrtion(RegisterModel model)
         {
 
             var user = new IdentityUser
@@ -36,7 +36,7 @@ namespace WebApplication11.ViewModels
             return 0;
         }
 
-        public async Task<int> AdminLogin(LoginViewModel user)
+        public async Task<int> AdminLogin(LoginModel user)
         {
            
                 var result = await _signInManager.PasswordSignInAsync(user.Email, user.Password, user.RememberMe, false);

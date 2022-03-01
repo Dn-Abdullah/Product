@@ -3,7 +3,7 @@ using WebApplication11.Models;
 
 namespace WebApplication11.ViewModels
 {
-    public interface IProductAdminRepository
+    public interface IProductAdminViewModel
     {
         
      

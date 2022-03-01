@@ -19,11 +19,11 @@ namespace WebApplication11.Controllers
     public class ProductUserController : Controller
 
     {
-        private readonly UserManager<IdentityUser> _userManager;
+      //  private readonly UserManager<IdentityUser> _userManager;
         private readonly DatabaseContaxt _context;
         private readonly IWebHostEnvironment webHostEnvironment;
-        public IProductUserRepository _ProductUserRepository;
-        public ProductUserController(DatabaseContaxt context, IWebHostEnvironment hostEnvironment, IProductUserRepository productUserRepository)
+        public IProductUserViewModel _ProductUserRepository;
+        public ProductUserController(DatabaseContaxt context, IWebHostEnvironment hostEnvironment, IProductUserViewModel productUserRepository)
         {
             _context = context;
 

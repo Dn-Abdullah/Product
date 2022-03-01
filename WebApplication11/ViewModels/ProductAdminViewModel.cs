@@ -7,13 +7,13 @@ using WebApplication11.Models;
 
 namespace WebApplication11.ViewModels
 {
-    public class ProductAdminRepository : IProductAdminRepository
+    public class ProductAdminViewModel : IProductAdminViewModel
     {
         //IHttpContextAccessor _httpContextAccessor;
         //private readonly UserManager<IdentityUser> _userManager;
         private readonly DatabaseContaxt _contaxt;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public ProductAdminRepository(DatabaseContaxt contaxt, IWebHostEnvironment hostEnvironment)
+        public ProductAdminViewModel(DatabaseContaxt contaxt, IWebHostEnvironment hostEnvironment)
         {
             _contaxt = contaxt;
             _webHostEnvironment = hostEnvironment;

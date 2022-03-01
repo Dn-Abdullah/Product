@@ -13,9 +13,9 @@ builder.Services.AddDbContext<DatabaseContaxt>(options =>
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<DatabaseContaxt>();
 //builder.Services.AddSingleton<IProductRepository, ProductRepository>();
-builder.Services.AddTransient<IProductUserRepository, ProductUserRepository>();
-builder.Services.AddTransient<IProductAdminRepository, ProductAdminRepository>();
-builder.Services.AddTransient<IAccountRepository, AccountRepository>();
+builder.Services.AddTransient<IProductUserViewModel, ProductUserViewModel>();
+builder.Services.AddTransient<IProductAdminViewModel, ProductAdminViewModel>();
+builder.Services.AddTransient<IAccountViewModel, AccountViewModel>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
 
@@ -62,6 +62,6 @@ app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=ProductUser}/{action=Index}/{id?}");
 
 app.Run();

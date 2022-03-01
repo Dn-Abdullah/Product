@@ -6,48 +6,63 @@ using WebApplication11.Models;
 
 namespace WebApplication11.Repository
 {
-    public class ProductUserRepository : IProductUserRepository
+    public class ProductUserViewModel : IProductUserViewModel
     {
-        public const string SessionKeyName = "_Name";
+        public const string SessionKeyName = "_Id";
         IHttpContextAccessor _httpContextAccessor;
-        private readonly UserManager<IdentityUser> _userManager;
         private readonly DatabaseContaxt _context;
         private readonly IWebHostEnvironment webHostEnvironment;
-        public ProductUserRepository(DatabaseContaxt context, IWebHostEnvironment hostEnvironment, IHttpContextAccessor httpContextAccessor, UserManager<IdentityUser> userManager)
+        public ProductUserViewModel(DatabaseContaxt context, IWebHostEnvironment hostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
 
             webHostEnvironment = hostEnvironment;
             _httpContextAccessor = httpContextAccessor;
-            _userManager = userManager;
         }
         public async Task<List<ProductModel>> getcartItems(int id)
         {
-            List<ProductModel> products = new List<ProductModel>(); 
+            List<ProductModel> products = new List<ProductModel>();
             products = await (from pro in _context.ProductModels
-                            join cd in _context.Carts on pro.Id equals cd.ProductId
-                            where pro.Id == id
-                            select pro).ToListAsync();
+                              join cd in _context.Carts on pro.Id equals cd.ProductId
+                              where pro.Id == id
+                              select pro).ToListAsync();
             return products;
         }
 
         public async Task<ProductModel> ProductDetails(int? id)
         {
-           
+
             var productModel = await _context.ProductModels
                 .FirstOrDefaultAsync(m => m.Id == id);
             return productModel;
         }
 
         [HttpPost]
-        public async Task<CartDataModel> AddCart(int id)
+       // public async Task<List<string>> AddCart(int id)
+       public async Task<CartDataModel> AddCart(int id)
         {
-            if (string.IsNullOrEmpty(_httpContextAccessor.HttpContext.Session.GetString(SessionKeyName)))
-            {
-                _httpContextAccessor.HttpContext.Session.SetString(SessionKeyName, _userManager.GetUserId(_httpContextAccessor.HttpContext.User));
-            }
-            var UserId = _httpContextAccessor.HttpContext.Session.GetString(SessionKeyName);
+           // Hint(Guid id = Guid.NewGuid();)
+          //Generate temp user id(is not the same as login id)
 
+            var UserId = _httpContextAccessor.HttpContext.Session.GetString(SessionKeyName);
+            // create an object of cart and add an item into it.
+
+
+            // create a cookie and add the above objrct into cookie.
+            // 
+
+            //List<string> cart = new List<string> 
+            
+            //{
+            //    id.ToString(),
+            //    UserId 
+            //};
+
+            //if(cart != null)
+            //{
+            //    return cart ;
+
+            //}
             var obj = new CartDataModel()
             {
                 ProductId = id,

@@ -15,29 +15,27 @@ using System.Security.Claims;
 
 namespace WebApplication11.Controllers
 {
-  
+
     [Authorize]
 
     public class ProductAdminController : Controller
     {
         public const string SessionKeyName = "_Id";
-       
+
 
         private readonly ILogger<IdentityUser> _logger;
-        // IHttpContextAccessor _httpContextAccessor;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly DatabaseContaxt _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly IProductAdminRepository _ProductAdminRepository;
-       
-        public ProductAdminController(IProductAdminRepository productAdminRepository, IWebHostEnvironment webHostEnvironment, DatabaseContaxt context, UserManager<IdentityUser> userManager, ILogger<IdentityUser> logger)
+        private readonly IProductAdminViewModel _ProductAdminRepository;
+
+        public ProductAdminController(IProductAdminViewModel productAdminRepository, IWebHostEnvironment webHostEnvironment,DatabaseContaxt context, UserManager<IdentityUser> userManager, ILogger<IdentityUser> logger)
         {
-           _context = context;
+            _context = context;
             _webHostEnvironment = webHostEnvironment;
             _ProductAdminRepository = productAdminRepository;
             _userManager = userManager;
             _logger = logger;
-           // _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IActionResult> Index()
@@ -45,32 +43,24 @@ namespace WebApplication11.Controllers
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(SessionKeyName)))
             {
                 HttpContext.Session.SetString(SessionKeyName, _userManager.GetUserId(HttpContext.User));
-              
             }
             var id = HttpContext.Session.GetString(SessionKeyName);
-            
-
             _logger.LogInformation("Session Name: {Id}", id);
-           
+
             //CookieOptions option = new CookieOptions
             //{
             //    Expires = DateTime.Now.AddMilliseconds(60)
             //};
-
             //Response.Cookies.Append("User", _userManager.GetUserId(HttpContext.User), option);
             // var abc = _userManager.GetUserId(HttpContext.User);
             return View(await _context.ProductModels.ToListAsync());
-        
-        }
 
+        }
         [HttpGet]
         public IActionResult Create()
-
         {
             return View();
         }
-       
-
         // GET: ProductModels/Details/5
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
@@ -78,7 +68,6 @@ namespace WebApplication11.Controllers
             var productModel = await _ProductAdminRepository.ProductDetails(id);
             return View(productModel);
         }
-
         // GET: ProductModels/Delete/5
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
@@ -93,7 +82,6 @@ namespace WebApplication11.Controllers
             var productModel = await _ProductAdminRepository.DelConfirmed(id);
             return RedirectToAction(nameof(Index));
         }
-
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -102,14 +90,13 @@ namespace WebApplication11.Controllers
             }
 
             var EditProduct = await _ProductAdminRepository.ProductUpdate(id);
-           
+
             if (EditProduct == null)
             {
                 return NotFound();
             }
             return View(EditProduct);
         }
-
         // POST: ProductModels/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -120,53 +107,32 @@ namespace WebApplication11.Controllers
             {
                 return NotFound();
             }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    await _ProductAdminRepository.Update(id, productModel);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductModelExists(productModel.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                //      return RedirectToAction(nameof(Index));
+                await _ProductAdminRepository.Update(id, productModel);
                 return RedirectToAction("Index");
             }
             return View(productModel);
         }
-
         private bool ProductModelExists(int id)
         {
             return _context.ProductModels.Any(e => e.Id == id);
         }
-
         public IActionResult Createe()
         {
             return View();
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        // public async Task<IActionResult> Create([Bind("Id,ProductName,ProductPrice,ProfilePicture")] ProductModel productModel)
-
         public async Task<IActionResult> Create(IFormFile files, ProductModel pm)
-        { var add = _ProductAdminRepository.ProCreatee(files, pm);
+        {
+            var add = _ProductAdminRepository.ProCreatee(files, pm);
             if (add == null)
-            {   
-                    return NotFound();
+            {
+                return NotFound();
             }
             return RedirectToAction("Index", "ProductAdmin");
             ModelState.Clear();
-          
         }
 
 
@@ -325,14 +291,6 @@ namespace WebApplication11.Controllers
 //    }
 //    return View(productModel);
 //}
-
-
-
-
-
-
-
-
 
 
 
