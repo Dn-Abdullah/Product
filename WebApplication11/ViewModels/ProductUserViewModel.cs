@@ -48,7 +48,7 @@ namespace WebApplication11.Repository
             // create an object of cart and add an item into it.
 
 
-            // create a cookie and add the above objrct into cookie.
+            // create a cookie and add the above object into cookie.
             // 
 
             //List<string> cart = new List<string> 

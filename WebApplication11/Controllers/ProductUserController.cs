@@ -19,6 +19,7 @@ namespace WebApplication11.Controllers
     public class ProductUserController : Controller
 
     {
+        string id;
       //  private readonly UserManager<IdentityUser> _userManager;
         private readonly DatabaseContaxt _context;
         private readonly IWebHostEnvironment webHostEnvironment;
@@ -32,12 +33,54 @@ namespace WebApplication11.Controllers
             
         }
 
+
+
+        public Guid SessionGUID()
+        {
+            //if (HttpContext.Current.Request.Cookies["SessionGUID"])
+            //{
+            //    //return the SessionGUID
+            //    return HttpContext.Current.Request.Cookies["SessionGUID"].value as Guid;
+            //}
+            //else//new visit
+            //{
+
+
+
+                //set cookie to a new random Guid
+                var _guid = Guid.NewGuid();
+                CookieOptions option = new CookieOptions
+                {
+
+                    Expires = DateTime.Now.AddMinutes(5)
+                };
+                Response.Cookies.Append("User", _guid.ToString() , option);
+              //  Response.Cookies.Add(guidCookie);
+                return _guid;
+           // }
+        }
+
         // GET: ProductModels
         public async Task<IActionResult> Index()
         {
             //var abc = _userManager.GetUserId(HttpContext.User);
+            //  var id="";
+
+            if (id == null) { 
+               var id = SessionGUID();
+         
+            
+
+            CookieOptions option = new CookieOptions
+            {
+                
+                Expires = DateTime.Now.AddMinutes(5)
+            };
+         Response.Cookies.Append("User",id.ToString(), option);
+            }
             return View(await _context.ProductModels.ToListAsync());
-        }
+          
+                }
 
         // Detail
         public async Task<IActionResult> Details(int? id)
