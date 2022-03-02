@@ -19,18 +19,20 @@ namespace WebApplication11.Controllers
     public class ProductUserController : Controller
 
     {
-        string id;
-      //  private readonly UserManager<IdentityUser> _userManager;
+        public string id;
+        // string id;
+        //  private readonly UserManager<IdentityUser> _userManager;
+        IHttpContextAccessor _httpContextAccessor;
         private readonly DatabaseContaxt _context;
         private readonly IWebHostEnvironment webHostEnvironment;
         public IProductUserViewModel _ProductUserRepository;
-        public ProductUserController(DatabaseContaxt context, IWebHostEnvironment hostEnvironment, IProductUserViewModel productUserRepository)
+        public ProductUserController(DatabaseContaxt context, IWebHostEnvironment hostEnvironment, IProductUserViewModel productUserRepository, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
 
             webHostEnvironment = hostEnvironment;
             _ProductUserRepository = productUserRepository;
-            
+            _httpContextAccessor = httpContextAccessor; 
         }
 
 
@@ -46,7 +48,6 @@ namespace WebApplication11.Controllers
             //{
 
 
-
                 //set cookie to a new random Guid
                 var _guid = Guid.NewGuid();
                 CookieOptions option = new CookieOptions
@@ -54,7 +55,7 @@ namespace WebApplication11.Controllers
 
                     Expires = DateTime.Now.AddMinutes(5)
                 };
-                Response.Cookies.Append("User", _guid.ToString() , option);
+                Response.Cookies.Append("Key", _guid.ToString() , option);
               //  Response.Cookies.Add(guidCookie);
                 return _guid;
            // }
@@ -63,25 +64,50 @@ namespace WebApplication11.Controllers
         // GET: ProductModels
         public async Task<IActionResult> Index()
         {
-            //var abc = _userManager.GetUserId(HttpContext.User);
-            //  var id="";
-
-            if (id == null) { 
-               var id = SessionGUID();
-         
-            
-
-            CookieOptions option = new CookieOptions
+            string cookieValueFromContext = _httpContextAccessor.HttpContext.Request.Cookies["key"];
+            //read cookie from Request object  
+            string cookieValueFromReq = Request.Cookies["Key"];
+            if (cookieValueFromContext == null)
             {
-                
-                Expires = DateTime.Now.AddMinutes(5)
-            };
-         Response.Cookies.Append("User",id.ToString(), option);
+                Guid abc = Guid.NewGuid();
+                var value = Set("key", abc.ToString(), 10);
+                Console.WriteLine(value);
             }
+            //Delete the cookie object  
+           // Remove("key");
             return View(await _context.ProductModels.ToListAsync());
-          
-                }
 
+            //   if (cookieValueFromReq == null) { 
+            //      var id = SessionGUID();
+
+
+
+            //   CookieOptions option = new CookieOptions
+            //   {
+
+            //       Expires = DateTime.Now.AddMinutes(5)
+            //   };
+            //Response.Cookies.Append("Key",id.ToString(), option);
+            //   }
+        }
+        public string Get(string key)
+        {
+            return Request.Cookies[key];
+        }
+        public string Set(string key, string value, int? expireTime)
+        {
+            CookieOptions option = new CookieOptions();
+            if (expireTime.HasValue)
+                option.Expires = DateTime.Now.AddMinutes(expireTime.Value);
+            else
+                option.Expires = DateTime.Now.AddMilliseconds(10);
+            Response.Cookies.Append(key, value, option);
+            return value;
+        }
+        public void Remove(string key)
+        {
+            Response.Cookies.Delete(key);
+        }
         // Detail
         public async Task<IActionResult> Details(int? id)
         {
@@ -96,6 +122,21 @@ namespace WebApplication11.Controllers
             }
             return View(productdetails);
         }
+        // Delete product from cart
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            var productdelete = await _ProductUserRepository.Del(id);
+            return View(productdelete);
+        }
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var productModel = await _ProductUserRepository.DelConfirmed(id);
+            return RedirectToAction(nameof(Index));
+        }
+
         // getCart
         public async Task<IActionResult> GetCart(int id)
         {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Ubiety.Dns.Core;
 using WebApplication11.Data;
 using WebApplication11.Models;
 
@@ -21,10 +22,15 @@ namespace WebApplication11.Repository
         }
         public async Task<List<ProductModel>> getcartItems(int id)
         {
+            string UId = _httpContextAccessor.HttpContext.Request.Cookies["key"];
             List<ProductModel> products = new List<ProductModel>();
+            //products = await (from pro in _context.ProductModels
+            //                  join cd in _context.Carts on pro.Id equals cd.ProductId
+            //                  where pro.Id == id
+            //                  select pro).ToListAsync();
             products = await (from pro in _context.ProductModels
                               join cd in _context.Carts on pro.Id equals cd.ProductId
-                              where pro.Id == id
+                              where cd.UserId == UId
                               select pro).ToListAsync();
             return products;
         }
@@ -36,37 +42,42 @@ namespace WebApplication11.Repository
                 .FirstOrDefaultAsync(m => m.Id == id);
             return productModel;
         }
+        public async Task<CartDataModel> Del(int? id)
+        {
+            if (id == 0)
+            {
+                return null;
+            }
+
+            var Cart = await _context.Carts
+                .FirstOrDefaultAsync(m => m.CartId == id);
+            if (Cart == null)
+            {
+                return null;
+            }
+            return Cart;
+
+        }
+
+        public async Task<CartDataModel> DelConfirmed(int id)
+        {
+            var delproduct = await _context.Carts.FindAsync(id);
+            _context.Carts.Remove(delproduct);
+            await _context.SaveChangesAsync();
+            return delproduct;
+        }
 
         [HttpPost]
        // public async Task<List<string>> AddCart(int id)
        public async Task<CartDataModel> AddCart(int id)
         {
-           // Hint(Guid id = Guid.NewGuid();)
-          //Generate temp user id(is not the same as login id)
-
-            var UserId = _httpContextAccessor.HttpContext.Session.GetString(SessionKeyName);
-            // create an object of cart and add an item into it.
-
-
-            // create a cookie and add the above object into cookie.
-            // 
-
-            //List<string> cart = new List<string> 
-            
-            //{
-            //    id.ToString(),
-            //    UserId 
-            //};
-
-            //if(cart != null)
-            //{
-            //    return cart ;
-
-            //}
+          
+            string UId = _httpContextAccessor.HttpContext.Request.Cookies["key"];
+        
             var obj = new CartDataModel()
             {
                 ProductId = id,
-                UserId = UserId,
+                UserId = UId,
             };
             if (obj != null)
             {
