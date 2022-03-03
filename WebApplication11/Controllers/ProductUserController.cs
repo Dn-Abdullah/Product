@@ -37,58 +37,46 @@ namespace WebApplication11.Controllers
 
 
 
-        public Guid SessionGUID()
-        {
-            //if (HttpContext.Current.Request.Cookies["SessionGUID"])
-            //{
-            //    //return the SessionGUID
-            //    return HttpContext.Current.Request.Cookies["SessionGUID"].value as Guid;
-            //}
-            //else//new visit
-            //{
+        //public Guid SessionGUID()
+        //{
+        //    //if (HttpContext.Current.Request.Cookies["SessionGUID"])
+        //    //{
+        //    //    //return the SessionGUID
+        //    //    return HttpContext.Current.Request.Cookies["SessionGUID"].value as Guid;
+        //    //}
+        //    //else//new visit
+        //    //{
 
 
-                //set cookie to a new random Guid
-                var _guid = Guid.NewGuid();
-                CookieOptions option = new CookieOptions
-                {
+        //        //set cookie to a new random Guid
+        //        var _guid = Guid.NewGuid();
+        //        CookieOptions option = new CookieOptions
+        //        {
 
-                    Expires = DateTime.Now.AddMinutes(5)
-                };
-                Response.Cookies.Append("Key", _guid.ToString() , option);
-              //  Response.Cookies.Add(guidCookie);
-                return _guid;
-           // }
-        }
+        //            Expires = DateTime.Now.AddMinutes(5)
+        //        };
+        //        Response.Cookies.Append("Key", _guid.ToString() , option);
+        //      //  Response.Cookies.Add(guidCookie);
+        //        return _guid;
+        //   // }
+        //}
 
         // GET: ProductModels
         public async Task<IActionResult> Index()
         {
             string cookieValueFromContext = _httpContextAccessor.HttpContext.Request.Cookies["key"];
-            //read cookie from Request object  
-            string cookieValueFromReq = Request.Cookies["Key"];
+            
             if (cookieValueFromContext == null)
             {
                 Guid abc = Guid.NewGuid();
-                var value = Set("key", abc.ToString(), 10);
-                Console.WriteLine(value);
+                var value = Set("key", abc.ToString(), 03);
+ 
             }
             //Delete the cookie object  
            // Remove("key");
             return View(await _context.ProductModels.ToListAsync());
 
-            //   if (cookieValueFromReq == null) { 
-            //      var id = SessionGUID();
 
-
-
-            //   CookieOptions option = new CookieOptions
-            //   {
-
-            //       Expires = DateTime.Now.AddMinutes(5)
-            //   };
-            //Response.Cookies.Append("Key",id.ToString(), option);
-            //   }
         }
         public string Get(string key)
         {
