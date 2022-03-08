@@ -38,7 +38,7 @@ namespace WebApplication11.ViewModels
             //var abc = _userManager.GetUserId(HttpContext.User);
 
             var obj = new ProductModel()
-
+            
                     {
                         //  Id = 0,
 

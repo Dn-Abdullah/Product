@@ -26,8 +26,8 @@
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="CartId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="hidden" asp-for="UserId" />
+        <input type="submit" value="Delete" class="btn btn-outline-danger" /> 
+        <a  class="btn btn-outline-success ms-3" asp-action="GetCart">Back to List</a>
     </form>
 </div>

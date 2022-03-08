@@ -14,6 +14,8 @@ namespace WebApplication11.Models
 
         public string Description { get; set; }
 
+       // public string ShortDescription { get; set; }
+
         //public IFormFile ProfilePicture { get; set; }
 
     }

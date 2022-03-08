@@ -24,10 +24,7 @@ namespace WebApplication11.Repository
         {
             string UId = _httpContextAccessor.HttpContext.Request.Cookies["key"];
             List<ProductModel> products = new List<ProductModel>();
-            //products = await (from pro in _context.ProductModels
-            //                  join cd in _context.Carts on pro.Id equals cd.ProductId
-            //                  where pro.Id == id
-            //                  select pro).ToListAsync();
+           
             products = await (from pro in _context.ProductModels
                               join cd in _context.Carts on pro.Id equals cd.ProductId
                               where cd.UserId == UId
@@ -42,15 +39,15 @@ namespace WebApplication11.Repository
                 .FirstOrDefaultAsync(m => m.Id == id);
             return productModel;
         }
-        public async Task<CartDataModel> Del(int? id)
+        public async Task<CartDataModel> Del(string id)
         {
-            if (id == 0)
+            if (id == null)
             {
                 return null;
             }
 
             var Cart = await _context.Carts
-                .FirstOrDefaultAsync(m => m.CartId == id);
+                .FirstOrDefaultAsync(m => m.UserId == id);
             if (Cart == null)
             {
                 return null;
@@ -59,9 +56,10 @@ namespace WebApplication11.Repository
 
         }
 
-        public async Task<CartDataModel> DelConfirmed(int id)
+        public async Task<CartDataModel> DelConfirmed(string id)
         {
-            var delproduct = await _context.Carts.FindAsync(id);
+            
+            var delproduct = await _context.Carts.Where(x=>x.UserId==id).FirstOrDefaultAsync();
             _context.Carts.Remove(delproduct);
             await _context.SaveChangesAsync();
             return delproduct;

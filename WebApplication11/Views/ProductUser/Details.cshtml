@@ -8,19 +8,22 @@
 
     <div class="container-fluid ">
         <div class="row justify-content-center">
-            <div class="col-sm-3">
+            <div class="col-sm-4 m-5 ">
 
 
-                <H2 class="text-white text-center mt-5 mb-3">@Html.DisplayFor(model => model.ProductName)</H2>
+                
                 <div class="row img-fluid">
                     <img src="@Url.Content("~/Uploads/" +Model.ProfilePicture)" alt="Error" />
                 </div>
             </div>
 
-            <div class="col-sm-5 bg-dark mt-5 border border-3 border-light rounded h-50 ">
+            <div class="col-sm-5 bg-dark mt-5 border border-2  rounded h-50 ">
                 <ul class="list-unstyled">
                     <li>
-                        <div class="row text-success fw-bold fs-5 mt-5 mb-2">
+                        <H2 class="text-white text-center m-3">@Html.DisplayFor(model => model.ProductName)</H2>
+                    </li>
+                    <li>
+                        <div class="row text-success fw-bold fs-5  mb-2">
                             <i class="bi bi-check-circle">
                                 In Stock
                             </i>
@@ -32,7 +35,7 @@
                         </div>
                     </li>
                     <li>
-                        <div class=" text-warning ms-5 ">
+                        <div class=" text-primary ms-5 ">
                             <i class="bi bi-star-fill"></i>
                             <i class="bi bi-star-fill"></i>
                             <i class="bi bi-star-fill"></i>
@@ -60,7 +63,7 @@
 
                         <div class=" row  justify-content-center ">
                             @Html.HiddenFor(modelItem => Model.Id)
-                            <input class="btn border border-2 border-seccess"
+                            <input class="btn btn-outline-success fw-bold"
                             type="submit" value="Add to Cart" 
                             />
 

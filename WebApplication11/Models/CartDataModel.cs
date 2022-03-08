@@ -8,7 +8,7 @@ namespace WebApplication11.Models
             [Key]
             public int CartId { get; set; }
             public int ProductId { get; set; }
-            public string UserId { get; set; }
+            public string? UserId { get; set; }
 
         
 

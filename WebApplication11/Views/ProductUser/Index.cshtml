@@ -3,8 +3,8 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="container">
-    <div class="row mt-3 ">
+<div class="container  ">
+    <div class="row ">
         @foreach (var item in Model)
         {
             <div class="col-sm-3  ">
@@ -21,7 +21,7 @@
                 <div>
                     @Html.DisplayFor(modelItem => item.Description)
                 </div>
-                <div class=" text-warning ">
+                <div class=" text-primary ">
                     <i class="bi bi-star-fill"></i>
                     <i class="bi bi-star-fill"></i>
                     <i class="bi bi-star-fill"></i>
@@ -32,12 +32,15 @@
                     <strong>
                         $@Html.DisplayFor(modelItem => item.ProductPrice)
                     </strong>
+                    
                 </div>
                  </div>
             </div>
         }
     </div>
 </div>
+
+
 
 @*  <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |

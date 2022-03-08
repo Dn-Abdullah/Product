@@ -9,8 +9,8 @@ namespace WebApplication11.Repository
         //Task<List<string>> AddCart(int id);
         Task<ProductModel> ProductDetails(int? id);
         Task<CartDataModel> AddCart(int id);
-        Task<CartDataModel> Del(int? id);
-        Task<CartDataModel> DelConfirmed(int id);
+        Task<CartDataModel> Del(string id);
+        Task<CartDataModel> DelConfirmed(string id);
     }
 
 }
