@@ -13,6 +13,8 @@ namespace WebApplication11.Repository
         IHttpContextAccessor _httpContextAccessor;
         private readonly DatabaseContaxt _context;
         private readonly IWebHostEnvironment webHostEnvironment;
+       // string UId = "";
+
         public ProductUserViewModel(DatabaseContaxt context, IWebHostEnvironment hostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
@@ -40,15 +42,16 @@ namespace WebApplication11.Repository
                 .FirstOrDefaultAsync(m => m.Id == id);
             return productModel;
         }
-        public async Task<CartDataModel> Del(string id)
+        public async Task<CartDataModel> Del(int id)
         {
+            string UId = _httpContextAccessor.HttpContext.Request.Cookies["key"];
             if (id == null)
             {
                 return null;
             }
 
             var Cart = await _context.Carts
-                .FirstOrDefaultAsync(m => m.UserId == id);
+                .FirstOrDefaultAsync(m => m.ProductId == id && m.UserId==UId);
             if (Cart == null)
             {
                 return null;
@@ -57,10 +60,10 @@ namespace WebApplication11.Repository
 
         }
 
-        public async Task<CartDataModel> DelConfirmed(string id)
+        public async Task<CartDataModel> DelConfirmed(int id)
         {
-            
-            var delproduct = await _context.Carts.Where(x=>x.UserId==id).FirstOrDefaultAsync();
+            string  uid = _httpContextAccessor.HttpContext.Request.Cookies["key"];
+            var delproduct = await _context.Carts.Where(x=>x.ProductId ==id && x.UserId==uid).FirstOrDefaultAsync();
             _context.Carts.Remove(delproduct);
             await _context.SaveChangesAsync();
             return delproduct;

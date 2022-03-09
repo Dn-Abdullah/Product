@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<WebApplication11.Models.ProductModel>
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -7,12 +8,11 @@
 
 <p>
     <a type="button" asp-action="Create" class="btn btn-secondary btn-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to Add new iteam">Add</a>
-    @*<a >Create New</a>*@
+
 </p>
 <table class="table align-middle">
     <thead>
         <tr>
-
             <th>
                 @Html.DisplayNameFor(model => model.ProfilePicture)
             </th>
@@ -20,42 +20,47 @@
                 @Html.DisplayNameFor(model => model.ProductName)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.ShortDescription)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ProductPrice)
             </th>
-            
             <th></th>
+
         </tr>
     </thead>
-    <tbody >
+    <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td class="col-sm-3">
+                 <td class="col-sm-3">
                     <img src="@Url.Content("~/Uploads/"+item.ProfilePicture)" class="img-fluid w-50" alt="Error" />
                 </td>
-                <td class="col-sm-2">
+                <td class="">
                     @Html.DisplayFor(modelItem => item.ProductName)
                 </td>
-                <td class="col-sm-3">
+                 <td class="">
+                    @Html.DisplayFor(modelItem => item.ShortDescription)
+                </td>
+                <td class="">
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
-                <td class="col-sm-2">
+                <td class="">
                     $
                     @Html.DisplayFor(modelItem => item.ProductPrice)
                 </td>
+               
                 <td>
-                  <div class="btn-group-vertical m-2" role="group" aria-label="Basic example">
+                     <div class="btn-group-vertical m-2" role="group" aria-label="Basic example">
                       <a  type="button" class="btn btn-secondary m-2" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                       <a type="button" class="btn btn-secondary m-2" asp-action="Details" asp-route-id="@item.Id">Details</a>
                       <a type="button" class="btn btn-secondary m-2" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                   </div>
-
                 </td>
             </tr>
         }
     </tbody>
 </table>
-@*<p><b>Id:</b> @HttpContext.Session.GetString("_Id");</p>*@

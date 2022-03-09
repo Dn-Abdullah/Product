@@ -86,7 +86,7 @@ namespace WebApplication11.Controllers
         }
         // Delete product from cart
         [HttpGet]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int id)
         {
 
             var productdelete = await _ProductUserRepository.Del(id);
@@ -94,7 +94,7 @@ namespace WebApplication11.Controllers
         }
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var productModel = await _ProductUserRepository.DelConfirmed(id);
             return RedirectToAction(nameof(GetCart));
@@ -119,7 +119,7 @@ namespace WebApplication11.Controllers
             {
                 return NotFound();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(GetCart));
         }
         public async Task DeleteId(string id)
         {

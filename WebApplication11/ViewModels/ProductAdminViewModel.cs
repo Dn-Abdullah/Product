@@ -45,6 +45,7 @@ namespace WebApplication11.ViewModels
                         ProductName = pm.ProductName,
                         ProductPrice = pm.ProductPrice,
                         Description = pm.Description,
+                        ShortDescription = pm.ShortDescription,
                         ProfilePicture = newFileName,
 
 
@@ -112,7 +113,7 @@ namespace WebApplication11.ViewModels
         }
 
 
-        public async Task<int> Update(int id, [Bind("Id,ProductName,ProductPrice,ProfilePicture,Description")] ProductModel productModel)
+        public async Task<int> Update(int id, [Bind("Id,ProductName,ProductPrice,ProfilePicture,Description,ShortDescription")] ProductModel productModel)
         {
             _contaxt.Update(productModel);
             await _contaxt.SaveChangesAsync();
