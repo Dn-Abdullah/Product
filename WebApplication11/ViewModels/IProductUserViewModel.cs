@@ -10,7 +10,7 @@ namespace WebApplication11.Repository
         Task<ProductModel> ProductDetails(int? id);
         Task<CartDataModel> AddCart(int id);
         Task<CartDataModel> Del(int id);
-        Task<CartDataModel> DelConfirmed(int id);
+        Task<List<CartDataModel>> DeleteAll();
     }
 
 }

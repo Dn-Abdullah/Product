@@ -9,7 +9,7 @@ namespace WebApplication11.Repository
 {
     public class ProductUserViewModel : IProductUserViewModel
     {
-        public const string SessionKeyName = "_Id";
+      //  public const string SessionKeyName = "_Id";
         IHttpContextAccessor _httpContextAccessor;
         private readonly DatabaseContaxt _context;
         private readonly IWebHostEnvironment webHostEnvironment;
@@ -50,21 +50,27 @@ namespace WebApplication11.Repository
                 return null;
             }
 
-            var Cart = await _context.Carts
-                .FirstOrDefaultAsync(m => m.ProductId == id && m.UserId==UId);
-            if (Cart == null)
+            //var Cart = await _context.Carts
+            //    .FirstOrDefaultAsync(m => m.ProductId == id && m.UserId==UId);
+            var DelCart = await _context.Carts.Where(x => x.ProductId == id && x.UserId == UId).FirstOrDefaultAsync();
+            _context.Carts.Remove(DelCart);
+            await _context.SaveChangesAsync();
+            if (DelCart == null)
             {
                 return null;
             }
-            return Cart;
+            return DelCart;
 
         }
 
-        public async Task<CartDataModel> DelConfirmed(int id)
+        public async Task<List<CartDataModel>> DeleteAll()
         {
-            string  uid = _httpContextAccessor.HttpContext.Request.Cookies["key"];
-            var delproduct = await _context.Carts.Where(x=>x.ProductId ==id && x.UserId==uid).FirstOrDefaultAsync();
-            _context.Carts.Remove(delproduct);
+            string UId = _httpContextAccessor.HttpContext.Request.Cookies["key"];
+            List<CartDataModel> delproduct = new List<CartDataModel>();
+            // string  uid = _httpContextAccessor.HttpContext.Request.Cookies["key"];
+             delproduct = await _context.Carts.Where(x=>x.UserId==UId).ToListAsync();
+            _context.Carts.RemoveRange(delproduct);
+           // _context.Carts.Remove(delproduct);
             await _context.SaveChangesAsync();
             return delproduct;
         }

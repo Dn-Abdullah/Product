@@ -40,21 +40,13 @@ namespace WebApplication11.Controllers
 
         public async Task<IActionResult> Index()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString(SessionKeyName)))
-            {
-                HttpContext.Session.SetString(SessionKeyName, _userManager.GetUserId(HttpContext.User));
-            }
-            var id = HttpContext.Session.GetString(SessionKeyName);
-            _logger.LogInformation("Session Name: {Id}", id);
-
-            //CookieOptions option = new CookieOptions
-            //{
-            //    Expires = DateTime.Now.AddMilliseconds(60)
-            //};
-            //Response.Cookies.Append("User", _userManager.GetUserId(HttpContext.User), option);
-            // var abc = _userManager.GetUserId(HttpContext.User);
+           
             return View(await _context.ProductModels.ToListAsync());
 
+        }
+        public IActionResult ProceedToCheckout()
+        {
+            return View();
         }
         [HttpGet]
         public IActionResult Create()

@@ -90,13 +90,13 @@ namespace WebApplication11.Controllers
         {
 
             var productdelete = await _ProductUserRepository.Del(id);
-            return View(productdelete);
+            //   return View(productdelete);
+            return RedirectToAction(nameof(GetCart));
         }
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+       
+        public async Task<IActionResult> EmptyCart(string id)
         {
-            var productModel = await _ProductUserRepository.DelConfirmed(id);
+            var productModel = await _ProductUserRepository.DeleteAll();
             return RedirectToAction(nameof(GetCart));
         }
 

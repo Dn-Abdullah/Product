@@ -19,6 +19,7 @@ namespace WebApplication11.Controllers
         {
             return View();
         }
+       
         public IActionResult Register()
         {
             return View();
