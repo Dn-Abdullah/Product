@@ -29,6 +29,7 @@ namespace WebApplication11.Repository
                               join cd in _context.Carts on pro.Id equals cd.ProductId
                               where cd.UserId == UId
                               select pro).ToListAsync();
+            
             return products;
         }
 

@@ -105,6 +105,8 @@ namespace WebApplication11.Controllers
         {
             string cookieValueFromContext = _httpContextAccessor.HttpContext.Request.Cookies["key"];
             var products = await _ProductUserRepository.getcartItems(id);
+             ViewBag.list = products.Count;
+           // ViewBag.list = 0;
             ViewBag.messaage = cookieValueFromContext;
             return View(products);
 
